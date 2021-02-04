@@ -1,0 +1,15 @@
+{
+    "environments": {
+      "dev": {
+        "account": "333680067100",
+        "region": "us-west-2",
+        "createDns": true,
+        "domainName": "libraries.nd.edu",
+        "domainStackName": "libraries-domain",
+        "networkStackName": "peered-network",
+        "useExistingDnsZone": true,
+        "slackNotifyStackName": "slack-cd-approvals-test-notifier",
+        "createGithubWebhooks": false
+      }
+    }
+}
