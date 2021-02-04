@@ -1,7 +1,6 @@
 import * as cdk from '@aws-cdk/core'
 import { LambdaIntegration, RestApi } from '@aws-cdk/aws-apigateway'
 import { Code, Function, Runtime } from '@aws-cdk/aws-lambda'
-import { StringParameter } from '@aws-cdk/aws-ssm'
 
 export class GitHubListenerStack extends cdk.Stack {
   constructor (scope: cdk.Construct, id: string, props: cdk.StackProps) {
