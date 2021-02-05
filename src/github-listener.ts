@@ -1,6 +1,8 @@
 import * as cdk from '@aws-cdk/core'
-import { LambdaIntegration, RestApi } from '@aws-cdk/aws-apigateway'
-import { Code, Function, Runtime } from '@aws-cdk/aws-lambda'
+import { LambdaRestApi } from '@aws-cdk/aws-apigateway'
+import { Code, Function, Runtime, Tracing } from '@aws-cdk/aws-lambda'
+import { LogGroup, RetentionDays } from '@aws-cdk/aws-logs'
+import { ServicePrincipal } from '@aws-cdk/aws-iam'
 
 export class GitHubListenerStack extends cdk.Stack {
   constructor (scope: cdk.Construct, id: string, props: cdk.StackProps) {
@@ -8,24 +10,23 @@ export class GitHubListenerStack extends cdk.Stack {
 
     // The code that defines your stack goes here
 
+    const logs = new LogGroup(this, 'LambdaLogGroup')
+
     const webhookListener = new Function(this,'Listener',{
       code: Code.fromAsset('lambdas/'),
       runtime: Runtime.NODEJS_12_X,
-      handler: 'githubWebhookListener',
+      handler: 'github-webhook.githubWebhookListener',
       environment:{
         GITHUB_WEBHOOK_SECRET: "/all/github-listener/github-token",
       },
+      logRetention: RetentionDays.ONE_WEEK,
+      tracing: Tracing.ACTIVE,
     })
 
-    const api = new RestApi(this, 'webhook-listener', {
-      description: 'GitHub PR Lsitener',
-    })
+      const api = new LambdaRestApi(this, 'webhook-listener', {
+        handler: webhookListener,
+    })   
 
-    
-
-    api.root.addMethod('POST', new LambdaIntegration(Function.fromFunctionArn(this,'webhookArn',webhookListener.functionArn)))
-
-    
 
   }
 }
