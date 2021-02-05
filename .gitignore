@@ -1,6 +1,7 @@
 *.js
 !.eslintrc.js
 !jest.config.js
+!lambdas/*
 *.d.ts
 node_modules
 

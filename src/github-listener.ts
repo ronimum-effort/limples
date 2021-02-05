@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core'
 import { LambdaRestApi } from '@aws-cdk/aws-apigateway'
 import { Code, Function, Runtime, Tracing } from '@aws-cdk/aws-lambda'
 import { LogGroup, RetentionDays } from '@aws-cdk/aws-logs'
-import { ServicePrincipal } from '@aws-cdk/aws-iam'
+import { Effect, PolicyStatement } from '@aws-cdk/aws-iam'
 
 export class GitHubListenerStack extends cdk.Stack {
   constructor (scope: cdk.Construct, id: string, props: cdk.StackProps) {
@@ -26,6 +26,17 @@ export class GitHubListenerStack extends cdk.Stack {
       const api = new LambdaRestApi(this, 'webhook-listener', {
         handler: webhookListener,
     })   
+
+    webhookListener.addToRolePolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'ssm:GetParameter',
+        'ssm:*',
+      ],
+      resources: [
+        cdk.Fn.sub('arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/github-listener/github-secret'),
+      ],
+    }))
 
 
   }
