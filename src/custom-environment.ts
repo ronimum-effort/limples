@@ -60,6 +60,13 @@ export class CustomEnvironment implements Environment {
    */
   readonly alarmsEmail: string
 
+  /**
+   * 
+   * Path to where Dockerfile exists  
+   */
+
+  readonly dockerImagePath: string
+
   static fromContext = (node: ConstructNode, name: string): CustomEnvironment => {
     const contextEnv = getRequiredContext(node, 'environments')[name]
     if (contextEnv === undefined || contextEnv === null) {

@@ -12,20 +12,20 @@ export class GitHubListenerStack extends cdk.Stack {
 
     const logs = new LogGroup(this, 'LambdaLogGroup')
 
-    const webhookListener = new Function(this,'Listener',{
+    const webhookListener = new Function(this, 'Listener', {
       code: Code.fromAsset('lambdas/'),
       runtime: Runtime.NODEJS_12_X,
       handler: 'github-webhook.githubWebhookListener',
-      environment:{
-        GITHUB_WEBHOOK_SECRET: "/all/github-listener/github-token",
+      environment: {
+        GITHUB_WEBHOOK_SECRET: '/all/github-listener/github-token',
       },
       logRetention: RetentionDays.ONE_WEEK,
       tracing: Tracing.ACTIVE,
     })
 
-      const api = new LambdaRestApi(this, 'webhook-listener', {
-        handler: webhookListener,
-    })   
+    const api = new LambdaRestApi(this, 'webhook-listener', {
+      handler: webhookListener,
+    })
 
     webhookListener.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
@@ -37,7 +37,5 @@ export class GitHubListenerStack extends cdk.Stack {
         cdk.Fn.sub('arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/github-listener/github-secret'),
       ],
     }))
-
-
   }
 }
