@@ -26,4 +26,4 @@ jobs:
     - name: output env
       run: env
     - name: Push changes
-      run: git push -f origin HEAD:$GITHUB_HEAD_REF
+      run: git push origin HEAD:$GITHUB_HEAD_REF
