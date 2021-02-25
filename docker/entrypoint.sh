@@ -42,6 +42,6 @@ remove() {
 trap 'remove; exit 15' SIGTERM
 trap 'remove; exit 9' SIGKILL
 
-./run.sh "$*" &
+./runsvc.sh "$*" &
 
 wait $!

@@ -12,7 +12,7 @@ function signRequestBody(key, body) {
 module.exports.githubWebhookListener = async (event, context, callback) => {
   
   var errMsg; // eslint-disable-line
-  AWS.config.update({ region:'us-west-2' })
+  AWS.config.update({ region:'us-east-1' })
 
     const github_secret_token_path = {
         Name: "/all/github-listener/github-secret",
@@ -81,6 +81,10 @@ module.exports.githubWebhookListener = async (event, context, callback) => {
   console.log('---------------------------------');
   console.log('Payload', event.body);
   /* eslint-enable */
+
+  // if (githubEvent == 'push') {
+
+  // }
 
   // Do custom stuff here with github event data
   // For more on events see https://developer.github.com/v3/activity/events/types/

@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   curl \
   ca-certificates \
   jq \
+  gosu \
   && rm -rf /var/lib/apt/lists/*
 
 
@@ -15,7 +16,8 @@ RUN addgroup runner && \
   --disabled-password \
   --home /home/runner \
   --ingroup runner \
-  runner
+  runner && \
+  echo 'runner ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 WORKDIR /home/runner
 
@@ -27,6 +29,9 @@ RUN curl -sSLO https://github.com/actions/runner/releases/download/v${GITHUB_RUN
   && chown -R runner:runner /home/runner
 
 COPY entrypoint.sh entrypoint.sh
+COPY runsvc.sh runsvc.sh
+
+RUN chown -R runner:runner /home/runner && chmod u+x ./runsvc.sh 
 
 USER runner
 
