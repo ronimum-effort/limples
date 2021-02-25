@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register'
 import * as cdk from '@aws-cdk/core'
-import { ActionsStack } from '../src/cdk-stack'
+import { ActionsStack } from '../src/runner-cluster'
 import { GitHubListenerStack } from '../src/github-listener'
 import { CustomEnvironment } from '../src/custom-environment'
 import { getRequiredContext } from '../src/context-helpers'
