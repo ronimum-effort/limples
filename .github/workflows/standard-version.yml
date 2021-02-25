@@ -22,8 +22,12 @@ jobs:
         git config --global user.name $GITHUB_ACTOR
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
     - name: Run Standard Version
-      run: npx standard-version
-    - name: output env
-      run: env
-    - name: Push changes
-      run: git push -f origin HEAD:$GITHUB_HEAD_REF
+      run: |
+        npx standard-version
+        git push --follow-tags origin HEAD:$GITHUB_HEAD_REF
+    # - name: output env
+    #   run: env
+    # - name: Push changes
+    #   run: |
+    #     git fetch origin $GITHUB_HEAD_REF
+    #     git push origin HEAD:$GITHUB_HEAD_REF
