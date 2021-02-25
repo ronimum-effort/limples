@@ -7,23 +7,27 @@ on:
 jobs:
   run-standard-version:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [ 14.x ]
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+      with:
+        fetch-depth: 0
+    - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 14.x
     - name: Config git
       run: |
         git config --global user.name $GITHUB_ACTOR
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
     - name: Run Standard Version
-      run: npx standard-version
-    - name: output env
-      run: env
-    - name: Push changes
-      run: git push -f origin HEAD:$GITHUB_HEAD_REF
+      run: |
+        npx standard-version
+        git fetch origin $GITHUB_HEAD_REF
+        git push -f --follow-tags origin HEAD:$GITHUB_HEAD_REF
+    # - name: output env
+    #   run: env
+    # - name: Push changes
+    #   run: |
+    #     git fetch origin $GITHUB_HEAD_REF
+    #     git push origin HEAD:$GITHUB_HEAD_REF
