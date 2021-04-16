@@ -10,7 +10,8 @@
         "useExistingDnsZone": true,
         "slackNotifyStackName": "slack-cd-approvals-test-notifier",
         "createGithubWebhooks": false,
-        "dockerImagePath": "./docker"
+        "dockerImagePath": "./docker",
+        "dockerhubCredentialsPath": "/all/docker/credentials"
       }
     }
 }
